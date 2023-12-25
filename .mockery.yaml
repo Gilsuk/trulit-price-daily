@@ -1,0 +1,9 @@
+with-expecter: True
+recursive: True
+all: True
+outpkg: "mocks"
+dir: "{{.InterfaceDir}}/mocks"
+mockname: "{{.InterfaceName}}"
+filename: "{{.MockName}}.go"
+packages:
+  github.com/gilsuk/trulit-price-daily/collectors/bootstrap:
