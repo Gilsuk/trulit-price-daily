@@ -15,7 +15,7 @@ func TestHandlers(t *testing.T) {
 	suite.Run(t, new(HandlerTestSuite))
 }
 
-func (suite *HandlerTestSuite) TestHandlerCallService() {
+func (suite *HandlerTestSuite) HandlerShouldCallService() {
 	// given
 	collector := mocks.NewCollector(suite.T())
 	handler := handlerConstructor{collector}.GetHandler()
