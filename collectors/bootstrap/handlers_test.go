@@ -4,11 +4,20 @@ import (
 	"testing"
 
 	"github.com/gilsuk/trulit-price-daily/collectors/bootstrap/mocks"
+	"github.com/stretchr/testify/suite"
 )
 
-func TestHandlerCallService(t *testing.T) {
+type HandlerTestSuite struct {
+	suite.Suite
+}
+
+func TestHandlers(t *testing.T) {
+	suite.Run(t, new(HandlerTestSuite))
+}
+
+func (suite *HandlerTestSuite) TestHandlerCallService() {
 	// given
-	collector := mocks.NewCollector(t)
+	collector := mocks.NewCollector(suite.T())
 	handler := handlerConstructor{collector}.GetHandler()
 
 	// when, then
