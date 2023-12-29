@@ -1,9 +1,10 @@
-package main
+package handlers_test
 
 import (
 	"testing"
 
-	"github.com/gilsuk/trulit-price-daily/collectors/bootstrap/mocks"
+	"github.com/gilsuk/trulit-price-daily/collector/presenter/handlers"
+	"github.com/gilsuk/trulit-price-daily/collector/worker/collectors/mocks"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -18,7 +19,7 @@ func TestHandlers(t *testing.T) {
 func (suite *HandlerTestSuite) HandlerShouldCallService() {
 	// given
 	collector := mocks.NewCollector(suite.T())
-	handler := handlerConstructor{collector}.GetHandler()
+	handler := handlers.HandlerConstructor{collector}.GetHandler()
 
 	// when, then
 	collector.EXPECT().Collect().Return().Once()
