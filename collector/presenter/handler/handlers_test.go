@@ -66,6 +66,9 @@ func (suite *HandlerTestSuite) TestHandlerReturnErrorWhenWrongInputReceived() {
 		input:  marshal([]collector.Request{{Date: "2023-12-30"}}),
 		expect: nil,
 	}, {
+		input:  marshal([]collector.Request{{Date: "2023-13-60"}}),
+		expect: handler.ErrInvalidDateFormat,
+	}, {
 		input:  marshal([]collector.Request{{Date: ""}}),
 		expect: handler.ErrInvalidDateFormat,
 	}, {
