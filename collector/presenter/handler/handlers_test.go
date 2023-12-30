@@ -59,18 +59,28 @@ func (suite *HandlerTestSuite) TestHandlerCanConvertInput() {
 }
 
 func (suite *HandlerTestSuite) TestHandlerReturnErrorWhenWrongInputReceived() {
-	// given
-	handlerInstance := handler.Factory.New()
-	request := collector.Request{
-		Date: "",
+	cases := []struct {
+		input  events.SQSEvent
+		expect error
+	}{{
+		input:  marshal([]collector.Request{{Date: "2023-12-30"}}),
+		expect: nil,
+	}, {
+		input:  marshal([]collector.Request{{Date: ""}}),
+		expect: handler.ErrInvalidDateFormat,
+	}, {
+		input:  events.SQSEvent{Records: []events.SQSMessage{{Body: ""}}},
+		expect: handler.ErrInvalidJsonSyntax,
+	}}
+
+	for _, tc := range cases {
+		// given
+		handler := handler.Factory.New()
+		// when
+		err := handler(&tc.input)
+		// then
+		assert.ErrorIs(suite.T(), err, tc.expect)
 	}
-	input := marshal([]collector.Request{request})
-
-	// when
-	err := handlerInstance(&input)
-
-	// then
-	assert.ErrorIs(suite.T(), err, handler.ErrInvalidDateFormat)
 }
 
 func marshal(rs []collector.Request) events.SQSEvent {
