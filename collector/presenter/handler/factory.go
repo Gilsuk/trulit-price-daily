@@ -1,5 +1,7 @@
 package handler
 
+import "github.com/gilsuk/trulit-price-daily/collector/worker/collector"
+
 var Factory interface {
 	New() Handler
 } = factory{}
@@ -8,5 +10,5 @@ type factory struct {
 }
 
 func (f factory) New() Handler {
-	return infoHandler{}
+	return New((collector.Collector)(nil))
 }

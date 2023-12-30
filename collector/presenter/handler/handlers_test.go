@@ -24,7 +24,7 @@ func (suite *HandlerTestSuite) TestIfHandlerCallService() {
 
 	// when, then
 	collectorMock.EXPECT().Collect().Return().Once()
-	handler.Handle()
+	handler(nil)
 }
 
 func (suite *HandlerTestSuite) TestIfHandlerFactoryReturnHandler() {
@@ -33,5 +33,5 @@ func (suite *HandlerTestSuite) TestIfHandlerFactoryReturnHandler() {
 
 	// when, then
 	assert.NotNil(suite.T(), handlerInstance)
-	assert.Implements(suite.T(), (*handler.Handler)(nil), handlerInstance)
+	assert.IsType(suite.T(), (*handler.Handler)(nil), &handlerInstance)
 }
