@@ -1,12 +1,13 @@
 package handler
 
-var Factory = factory{}
+var Factory Ifactory = handlerFactory{}
 
 type Handler interface {
 	Handle()
 }
 
-type factory struct {
+type Ifactory interface {
+	New() Handler
 }
 
 type dummyHandler struct {
@@ -16,6 +17,9 @@ func (dummyHandler) Handle() {
 
 }
 
-func (f factory) New() Handler {
+type handlerFactory struct {
+}
+
+func (f handlerFactory) New() Handler {
 	return dummyHandler{}
 }
