@@ -1,25 +1,21 @@
 package handler
 
-var Factory Ifactory = handlerFactory{}
+import "github.com/gilsuk/trulit-price-daily/collector/worker/collector"
 
 type Handler interface {
 	Handle()
 }
 
-type Ifactory interface {
-	New() Handler
+func New(c collector.Collector) Handler {
+	return infoHandler{
+		collector: c,
+	}
 }
 
-type dummyHandler struct {
+type infoHandler struct {
+	collector collector.Collector
 }
 
-func (dummyHandler) Handle() {
-
-}
-
-type handlerFactory struct {
-}
-
-func (f handlerFactory) New() Handler {
-	return dummyHandler{}
+func (h infoHandler) Handle() {
+	h.collector.Collect()
 }
