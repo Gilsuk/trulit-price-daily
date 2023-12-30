@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/gilsuk/trulit-price-daily/collector/presenter/handler"
-	collector_mocks "github.com/gilsuk/trulit-price-daily/collector/worker/collector/mocks"
+	"github.com/gilsuk/trulit-price-daily/collector/worker/collector/mocks"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
@@ -19,7 +19,7 @@ func TestHandlers(t *testing.T) {
 
 func (suite *HandlerTestSuite) TestIfHandlerCallService() {
 	// given
-	collectorMock := collector_mocks.NewCollector(suite.T())
+	collectorMock := mocks.NewCollector(suite.T())
 	handler := handler.New(collectorMock)
 
 	// when, then
