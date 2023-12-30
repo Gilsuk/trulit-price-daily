@@ -58,6 +58,21 @@ func (suite *HandlerTestSuite) TestHandlerCanConvertInput() {
 	handler(&input)
 }
 
+func (suite *HandlerTestSuite) TestHandlerReturnErrorWhenWrongInputReceived() {
+	// given
+	handlerInstance := handler.Factory.New()
+	request := collector.Request{
+		Date: "",
+	}
+	input := marshal([]collector.Request{request})
+
+	// when
+	err := handlerInstance(&input)
+
+	// then
+	assert.ErrorIs(suite.T(), err, handler.ErrInvalidDateFormat)
+}
+
 func marshal(rs []collector.Request) events.SQSEvent {
 	res := make([]events.SQSMessage, len(rs))
 	for i, v := range rs {

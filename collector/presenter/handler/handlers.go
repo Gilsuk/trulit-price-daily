@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"errors"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/gilsuk/trulit-price-daily/collector/worker/collector"
@@ -14,9 +15,9 @@ func New(c collector.Collector) Handler {
 		request := &collector.Request{}
 		err := json.Unmarshal([]byte(s.Records[0].Body), request)
 		if err != nil {
-			return err
+			return errors.Join(ErrInvalidDateFormat, err)
 		}
 		c.Collect(*request)
-		return nil
+		return ErrInvalidDateFormat
 	}
 }

@@ -10,5 +10,5 @@ type factory struct {
 }
 
 func (f factory) New() Handler {
-	return New((collector.Collector)(nil))
+	return New(collector.InfoCollector{})
 }
