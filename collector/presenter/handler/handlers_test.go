@@ -86,6 +86,8 @@ func (suite *HandlerTestSuite) TestHandlerReturnErrorWhenWrongInputReceived() {
 	}
 }
 
+// TODO. when does SQSEvent contains multiple SQSMessage
+
 func marshal(rs []collector.Request) events.SQSEvent {
 	res := make([]events.SQSMessage, len(rs))
 	for i, v := range rs {
