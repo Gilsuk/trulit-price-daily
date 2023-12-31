@@ -6,14 +6,14 @@ import (
 	"time"
 
 	"github.com/aws/aws-lambda-go/events"
-	"github.com/gilsuk/trulit-price-daily/collector/worker/collector"
+	"github.com/gilsuk/trulit-price-daily/collector/worker"
 )
 
 type AWSLambdaHandler func(*events.SQSEvent) error
 
-func New(c collector.Worker) AWSLambdaHandler {
+func New(w worker.Worker) AWSLambdaHandler {
 	return func(s *events.SQSEvent) error {
-		request := &collector.Request{}
+		request := &worker.Request{}
 		err := json.Unmarshal([]byte(s.Records[0].Body), request)
 		if err != nil {
 			return errors.Join(ErrInvalidJsonSyntax, err)
@@ -22,7 +22,7 @@ func New(c collector.Worker) AWSLambdaHandler {
 		if err != nil {
 			return errors.Join(ErrInvalidDateFormat, err)
 		}
-		c.Do(*request)
+		w.Do(*request)
 		return nil
 	}
 }

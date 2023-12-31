@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	collector "github.com/gilsuk/trulit-price-daily/collector/worker/collector"
+	worker "github.com/gilsuk/trulit-price-daily/collector/worker"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -21,7 +21,7 @@ func (_m *Worker) EXPECT() *Worker_Expecter {
 }
 
 // Do provides a mock function with given fields: _a0
-func (_m *Worker) Do(_a0 collector.Request) {
+func (_m *Worker) Do(_a0 worker.Request) {
 	_m.Called(_a0)
 }
 
@@ -31,14 +31,14 @@ type Worker_Do_Call struct {
 }
 
 // Do is a helper method to define mock.On call
-//   - _a0 collector.Request
+//   - _a0 worker.Request
 func (_e *Worker_Expecter) Do(_a0 interface{}) *Worker_Do_Call {
 	return &Worker_Do_Call{Call: _e.mock.On("Do", _a0)}
 }
 
-func (_c *Worker_Do_Call) Run(run func(_a0 collector.Request)) *Worker_Do_Call {
+func (_c *Worker_Do_Call) Run(run func(_a0 worker.Request)) *Worker_Do_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(collector.Request))
+		run(args[0].(worker.Request))
 	})
 	return _c
 }
@@ -48,7 +48,7 @@ func (_c *Worker_Do_Call) Return() *Worker_Do_Call {
 	return _c
 }
 
-func (_c *Worker_Do_Call) RunAndReturn(run func(collector.Request)) *Worker_Do_Call {
+func (_c *Worker_Do_Call) RunAndReturn(run func(worker.Request)) *Worker_Do_Call {
 	_c.Call.Return(run)
 	return _c
 }

@@ -6,8 +6,8 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/gilsuk/trulit-price-daily/collector/presenter"
-	"github.com/gilsuk/trulit-price-daily/collector/worker/collector"
-	"github.com/gilsuk/trulit-price-daily/collector/worker/collector/mocks"
+	"github.com/gilsuk/trulit-price-daily/collector/worker"
+	"github.com/gilsuk/trulit-price-daily/collector/worker/mocks"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
@@ -25,10 +25,10 @@ func (suite *HandlerTestSuite) TestIfHandlerCallService() {
 	// given
 	workerMock := mocks.NewWorker(suite.T())
 	handler := presenter.New(workerMock)
-	request := collector.Request{
+	request := worker.Request{
 		Date: "2023-12-30",
 	}
-	input := marshal([]collector.Request{request})
+	input := marshal([]worker.Request{request})
 
 	// when, then
 	workerMock.EXPECT().Do(mock.Anything).Return().Once()
@@ -48,10 +48,10 @@ func (suite *HandlerTestSuite) TestHandlerCanConvertInput() {
 	// given
 	workerMock := mocks.NewWorker(suite.T())
 	handler := presenter.New(workerMock)
-	request := collector.Request{
+	request := worker.Request{
 		Date: "2023-12-30",
 	}
-	input := marshal([]collector.Request{request})
+	input := marshal([]worker.Request{request})
 
 	// when, then
 	workerMock.EXPECT().Do(request).Return().Once()
@@ -63,13 +63,13 @@ func (suite *HandlerTestSuite) TestHandlerReturnErrorWhenWrongInputReceived() {
 		input  events.SQSEvent
 		expect error
 	}{{
-		input:  marshal([]collector.Request{{Date: "2023-12-30"}}),
+		input:  marshal([]worker.Request{{Date: "2023-12-30"}}),
 		expect: nil,
 	}, {
-		input:  marshal([]collector.Request{{Date: "2023-13-60"}}),
+		input:  marshal([]worker.Request{{Date: "2023-13-60"}}),
 		expect: presenter.ErrInvalidDateFormat,
 	}, {
-		input:  marshal([]collector.Request{{Date: ""}}),
+		input:  marshal([]worker.Request{{Date: ""}}),
 		expect: presenter.ErrInvalidDateFormat,
 	}, {
 		input:  events.SQSEvent{Records: []events.SQSMessage{{Body: ""}}},
@@ -88,7 +88,7 @@ func (suite *HandlerTestSuite) TestHandlerReturnErrorWhenWrongInputReceived() {
 
 // TODO. when does SQSEvent contains multiple SQSMessage
 
-func marshal(rs []collector.Request) events.SQSEvent {
+func marshal(rs []worker.Request) events.SQSEvent {
 	res := make([]events.SQSMessage, len(rs))
 	for i, v := range rs {
 		body, _ := json.Marshal(v)

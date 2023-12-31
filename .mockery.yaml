@@ -6,4 +6,4 @@ dir: "{{.InterfaceDir}}/mocks"
 mockname: "{{.InterfaceName}}"
 filename: "{{.MockName}}.go"
 packages:
-  github.com/gilsuk/trulit-price-daily/collector/worker/collector:
+  github.com/gilsuk/trulit-price-daily/collector/worker:
