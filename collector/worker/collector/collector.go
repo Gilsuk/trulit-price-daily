@@ -1,12 +1,12 @@
 package collector
 
-type Collector interface {
-	Collect(Request)
+type Worker interface {
+	Do(Request)
 }
 
 type InfoCollector struct {
 }
 
-func (c InfoCollector) Collect(r Request) {
+func (c InfoCollector) Do(r Request) {
 
 }

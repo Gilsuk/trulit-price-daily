@@ -11,7 +11,7 @@ import (
 
 type AWSLambdaHandler func(*events.SQSEvent) error
 
-func New(c collector.Collector) AWSLambdaHandler {
+func New(c collector.Worker) AWSLambdaHandler {
 	return func(s *events.SQSEvent) error {
 		request := &collector.Request{}
 		err := json.Unmarshal([]byte(s.Records[0].Body), request)
@@ -22,7 +22,7 @@ func New(c collector.Collector) AWSLambdaHandler {
 		if err != nil {
 			return errors.Join(ErrInvalidDateFormat, err)
 		}
-		c.Collect(*request)
+		c.Do(*request)
 		return nil
 	}
 }

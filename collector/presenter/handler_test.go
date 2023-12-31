@@ -23,15 +23,15 @@ func TestHandlers(t *testing.T) {
 
 func (suite *HandlerTestSuite) TestIfHandlerCallService() {
 	// given
-	collectorMock := mocks.NewCollector(suite.T())
-	handler := presenter.New(collectorMock)
+	workerMock := mocks.NewWorker(suite.T())
+	handler := presenter.New(workerMock)
 	request := collector.Request{
 		Date: "2023-12-30",
 	}
 	input := marshal([]collector.Request{request})
 
 	// when, then
-	collectorMock.EXPECT().Collect(mock.Anything).Return().Once()
+	workerMock.EXPECT().Do(mock.Anything).Return().Once()
 	handler(&input)
 }
 
@@ -46,15 +46,15 @@ func (suite *HandlerTestSuite) TestIfHandlerFactoryReturnHandler() {
 
 func (suite *HandlerTestSuite) TestHandlerCanConvertInput() {
 	// given
-	collectorMock := mocks.NewCollector(suite.T())
-	handler := presenter.New(collectorMock)
+	workerMock := mocks.NewWorker(suite.T())
+	handler := presenter.New(workerMock)
 	request := collector.Request{
 		Date: "2023-12-30",
 	}
 	input := marshal([]collector.Request{request})
 
 	// when, then
-	collectorMock.EXPECT().Collect(request).Return().Once()
+	workerMock.EXPECT().Do(request).Return().Once()
 	handler(&input)
 }
 
