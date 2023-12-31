@@ -1,11 +1,11 @@
-package handler_test
+package presenter_test
 
 import (
 	"encoding/json"
 	"testing"
 
 	"github.com/aws/aws-lambda-go/events"
-	"github.com/gilsuk/trulit-price-daily/collector/presenter/handler"
+	"github.com/gilsuk/trulit-price-daily/collector/presenter"
 	"github.com/gilsuk/trulit-price-daily/collector/worker/collector"
 	"github.com/gilsuk/trulit-price-daily/collector/worker/collector/mocks"
 	"github.com/stretchr/testify/assert"
@@ -24,7 +24,7 @@ func TestHandlers(t *testing.T) {
 func (suite *HandlerTestSuite) TestIfHandlerCallService() {
 	// given
 	collectorMock := mocks.NewCollector(suite.T())
-	handler := handler.New(collectorMock)
+	handler := presenter.New(collectorMock)
 	request := collector.Request{
 		Date: "2023-12-30",
 	}
@@ -37,17 +37,17 @@ func (suite *HandlerTestSuite) TestIfHandlerCallService() {
 
 func (suite *HandlerTestSuite) TestIfHandlerFactoryReturnHandler() {
 	// given
-	handlerInstance := handler.Factory.New()
+	handlerInstance := presenter.Factory.New()
 
 	// when, then
 	assert.NotNil(suite.T(), handlerInstance)
-	assert.IsType(suite.T(), (*handler.Handler)(nil), &handlerInstance)
+	assert.IsType(suite.T(), (*presenter.Handler)(nil), &handlerInstance)
 }
 
 func (suite *HandlerTestSuite) TestHandlerCanConvertInput() {
 	// given
 	collectorMock := mocks.NewCollector(suite.T())
-	handler := handler.New(collectorMock)
+	handler := presenter.New(collectorMock)
 	request := collector.Request{
 		Date: "2023-12-30",
 	}
@@ -67,18 +67,18 @@ func (suite *HandlerTestSuite) TestHandlerReturnErrorWhenWrongInputReceived() {
 		expect: nil,
 	}, {
 		input:  marshal([]collector.Request{{Date: "2023-13-60"}}),
-		expect: handler.ErrInvalidDateFormat,
+		expect: presenter.ErrInvalidDateFormat,
 	}, {
 		input:  marshal([]collector.Request{{Date: ""}}),
-		expect: handler.ErrInvalidDateFormat,
+		expect: presenter.ErrInvalidDateFormat,
 	}, {
 		input:  events.SQSEvent{Records: []events.SQSMessage{{Body: ""}}},
-		expect: handler.ErrInvalidJsonSyntax,
+		expect: presenter.ErrInvalidJsonSyntax,
 	}}
 
 	for _, tc := range cases {
 		// given
-		handler := handler.Factory.New()
+		handler := presenter.Factory.New()
 		// when
 		err := handler(&tc.input)
 		// then
