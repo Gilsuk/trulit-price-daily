@@ -2,13 +2,6 @@ package presenter
 
 import "github.com/gilsuk/trulit-price-daily/collector/worker/collector"
 
-var Factory interface {
-	New() Handler
-} = factory{}
-
-type factory struct {
-}
-
-func (f factory) New() Handler {
+func NewAWSLambdaHandler() AWSLambdaHandler {
 	return New(collector.InfoCollector{})
 }

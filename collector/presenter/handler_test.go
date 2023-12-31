@@ -37,11 +37,11 @@ func (suite *HandlerTestSuite) TestIfHandlerCallService() {
 
 func (suite *HandlerTestSuite) TestIfHandlerFactoryReturnHandler() {
 	// given
-	handlerInstance := presenter.Factory.New()
+	handlerInstance := presenter.NewAWSLambdaHandler()
 
 	// when, then
 	assert.NotNil(suite.T(), handlerInstance)
-	assert.IsType(suite.T(), (*presenter.Handler)(nil), &handlerInstance)
+	assert.IsType(suite.T(), (*presenter.AWSLambdaHandler)(nil), &handlerInstance)
 }
 
 func (suite *HandlerTestSuite) TestHandlerCanConvertInput() {
@@ -78,7 +78,7 @@ func (suite *HandlerTestSuite) TestHandlerReturnErrorWhenWrongInputReceived() {
 
 	for _, tc := range cases {
 		// given
-		handler := presenter.Factory.New()
+		handler := presenter.NewAWSLambdaHandler()
 		// when
 		err := handler(&tc.input)
 		// then

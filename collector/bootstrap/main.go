@@ -6,5 +6,5 @@ import (
 )
 
 func main() {
-	lambda.Start(presenter.Factory.New())
+	lambda.Start(presenter.NewAWSLambdaHandler())
 }
